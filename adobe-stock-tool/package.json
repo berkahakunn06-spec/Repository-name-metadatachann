@@ -1,6 +1,7 @@
 {
   "name": "adobe-stock-tool",
   "version": "1.0.0",
+  "description": "Adobe Stock Metadata Tool",
   "main": "server.js",
   "scripts": {
     "start": "node server.js"
