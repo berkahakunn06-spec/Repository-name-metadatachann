@@ -1,8 +1,8 @@
 const express = require("express");
-const multer = require("multer");
 const cors = require("cors");
-const fs = require("fs");
+const multer = require("multer");
 const path = require("path");
+const fs = require("fs");
 
 const app = express();
 
@@ -11,114 +11,56 @@ app.use(express.json());
 app.use(express.static(__dirname));
 
 const upload = multer({
-  dest: "uploads/"
+    dest: "uploads/"
 });
 
 app.get("/", (req, res) => {
-  res.sendFile(path.join(__dirname, "index.html"));
+    res.sendFile(path.join(__dirname, "index.html"));
 });
 
-app.post("/upload", upload.array("images"), async (req, res) => {
+app.post("/upload", upload.array("files"), async (req, res) => {
 
-  try {
+    try {
 
-    const files = req.files || [];
+        const files = req.files || [];
 
-    const results = files.map(file => {
+        const result = files.map(file => {
 
-      return {
+            return {
+                filename: file.originalname,
+                title: file.originalname
+                    .replace(/\.[^/.]+$/, "")
+                    .replace(/[-_]/g, " "),
+                keywords: [
+                    "adobe stock",
+                    "metadata",
+                    "ai generated",
+                    "design"
+                ],
+                description:
+                    "Professional AI generated metadata for Adobe Stock."
+            };
 
-        filename: file.originalname,
+        });
 
-        title:
-          "Futuristic Technology Interface Background",
+        res.json({
+            success: true,
+            total: result.length,
+            data: result
+        });
 
-        description:
-          "Professional futuristic digital technology interface with modern neon cyberpunk design.",
+    } catch (err) {
 
-        keywords: [
+        res.status(500).json({
+            error: err.message
+        });
 
-          "technology",
-          "digital",
-          "innovation",
-          "modern",
-          "creative",
-          "professional",
-          "business",
-          "future",
-          "abstract",
-          "background",
-          "design",
-          "visual",
-          "interface",
-          "automation",
-          "artificial intelligence",
-          "cyberpunk",
-          "gradient",
-          "neon",
-          "software",
-          "dashboard",
-          "user interface",
-          "desktop",
-          "online",
-          "network",
-          "system",
-          "virtual",
-          "workspace",
-          "application",
-          "data",
-          "computer",
-          "coding",
-          "developer",
-          "web",
-          "tech",
-          "futuristic",
-          "ui design",
-          "productivity",
-          "electronics",
-          "smart technology",
-          "digital workspace",
-          "modern interface",
-          "high tech",
-          "glowing",
-          "virtual system",
-          "innovation concept",
-          "future technology",
-          "tech background",
-          "cyber interface",
-          "advanced system"
-
-        ]
-
-      };
-
-    });
-
-    res.json({
-
-      total: results.length,
-      failed: 0,
-      data: results
-
-    });
-
-  } catch (err) {
-
-    res.status(500).json({
-      error: err.message
-    });
-
-  }
+    }
 
 });
 
-const PORT =
-process.env.PORT || 3000;
+const PORT = process.env.PORT || 3000;
 
 app.listen(PORT, () => {
-
-  console.log(
-    "Server running on port " + PORT
-  );
-
+    console.log("Server running on port " + PORT);
 });
