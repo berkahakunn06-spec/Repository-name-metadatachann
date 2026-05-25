@@ -830,11 +830,10 @@ file
 }
 
 try{
-
 const response =
 await fetch(
 
-"http://localhost:3000/upload",
+"https://repository-name-metadatchann-production-9a05.up.railway.app/upload",
 
 {
 method:"POST",
@@ -842,7 +841,6 @@ body:formData
 }
 
 );
-
 const data =
 await response.json();
 
@@ -850,7 +848,6 @@ document.getElementById(
 "completedFiles"
 ).innerText =
 data.total || 0;
-
 document.getElementById(
 "processingFiles"
 ).innerText =
